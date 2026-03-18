@@ -1,0 +1,75 @@
+
+ANTARCTICA STATION CREW SIMULATION MODEL
+
+
+WHAT IS THIS?
+-------------
+   This is an agent-based simulation that models the daily life, stress, and
+   physical health of a crew living in an Antarctic research station. Each
+   crew member (agent) has a personality type, a daily schedule of activities,
+   and tracked metrics for stress and physical health. Agents are organized
+   into small teams, and the simulation runs hour-by-hour over a
+   configurable number of days.
+
+WHAT DOES IT DO?
+----------------
+   - Creates a population of agents, each with a random personality type 
+     based on DISK model(dominant, conscientious, steady, or influential)
+     and a structured daily schedule (sleep, meals, team work, individual work,
+     exercise,leisure, and free time).
+
+   - Assigns agents into fixed-size teams (groups).
+
+   - Simulates each hour of each day: agents perform their scheduled
+     activity, which affects their stress and health. 
+   
+   - Work tasks have a difficulty score influenced by environmental 
+     harshness and team personality dynamics. 
+     Tasks can randomly fail, adding extra stress.
+
+   - Environmental accidents (e.g., blizzards, equipment failures) can
+     occur each hour based on the current season, causing stress spikes
+     and minor health damage to all agents.
+
+   - High stress (above 0.8) causes ongoing physical health degradation.
+
+   - At the end of each simulated day, the model calculates average stress
+     and health for every group and for the whole population, then exports
+     the results to CSV files.
+
+
+HOW TO RUN IT
+-------------
+   Prerequisites:
+     - Python 3.10 or later
+     - pandas library  (install with: pip install pandas)
+
+   Run from the command line:
+     python antarctica_model.py
+
+
+How to Set Initial Values:
+--------------------------
+   Change simulation parameters (population size, number of days,
+   weather conditions, season, etc.) by editing the values inside the
+   `run_config` dataclass near the top of this file.
+
+
+WHAT TO EXPECT (OUTPUT)
+-----------------------
+   The script produces two CSV files in the current working directory:
+
+   1. daily_summary.csv
+      One row per simulated day with these columns:
+        - day             : the day number (1, 2, ... n_days)
+        - avg_stress      : population-wide average stress that day
+        - avg_health      : population-wide average physical health that day
+        - group_stats     : per-group breakdown (as a nested dictionary string)
+
+   2. group_stats.csv
+      One row per group (team) from the "last" simulated day with these columns:
+        - avg_group_stress          : mean stress of that group's members
+        - avg_group_health          : mean health of that group's members
+        - group_personality_types   : list of personality types in the group
+
+ 
